@@ -2,9 +2,6 @@
   "name": "hbs_browserify",
   "version": "0.0.1",
   "private": true,
-  "scripts": {
-    "start": "node ./bin/www"
-  },
   "dependencies": {
     "express": "~4.2.0",
     "static-favicon": "~1.0.0",
@@ -14,5 +11,16 @@
     "debug": "~0.7.4",
     "hjs": "~0.0.6",
     "node-compass": "0.2.3"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-autoprefixer": "^2.1.0",
+    "gulp-browserify": "^0.5.1",
+    "gulp-clean": "^0.3.1",
+    "gulp-concat": "^2.5.2",
+    "gulp-livereload": "^3.8.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^1.3.3",
+    "gulp-util": "^3.0.4"
   }
 }
