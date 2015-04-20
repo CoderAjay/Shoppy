@@ -2,10 +2,18 @@
 <html>
   <head>
     <title>{{ title }}</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/styles/style.css' />
   </head>
   <body>
-    <h1>{{ title }}</h1>
-    <p>Welcome to {{ title }}</p>
+
+  <div class="container-fluid">
+<p>&rarr; &rarr;Begin content</p>
+    {{> header}}
+    <p>&rarr; &rarr;End content</p>
+  </div>
+
+
+
+    <script type="text/javascript" src="/scripts/bundle.js"></script>
   </body>
 </html>

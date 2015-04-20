@@ -1,44 +1,67 @@
 'use strict';
+/* global require*/
 var gulp = require('gulp'),
     gutil = require('gulp-util'),
     concat = require('gulp-concat'),
     rename = require('gulp-rename'),
     autoprefixer = require('gulp-autoprefixer'),
     sass = require('gulp-sass'),
+    jshint = require('gulp-jshint'),
     browserify = require('gulp-browserify'),
     livereload = require('gulp-livereload'),
     clean = require('gulp-clean'),
-    app = require('./app.js');
+    runSequence = require('run-sequence');
 
 
 var nodejs_files = [
     './app.js',
-    './views/*.hjs',
-    './routes/*.js'
+    './routes/*.js',
+    './externalApis/*.js'
 ];
 var dist_dev = './dist/developement/';
 
+var source = {
+    base: './',
+    views: ['./views/**/*.hjs', './views/*.hjs'],
+    stylesheets: './app/stylesheets/*.scss',
+    javascripts: './app/javascripts/*.js'
+};
+var developement = {
+    base: './dist/',
+    views: './dist/developement',
+    javascripts: './dist/developement/app/scripts',
+    stylesheets: './dist/developement/app/styles'
+};
 //cleaning distribution folder
 gulp.task('clean-build', function() {
-    gulp.src('./dist/', {
+    return gulp.src(developement.base, {
             read: false
         })
-        .pipe(clean());
+        .pipe(clean({
+            force: true
+        }));
 });
 // copying node server files in developement folder
-gulp.task('server-files', function() {
+gulp.task('server-files', ['views'], function() {
     return gulp.src(nodejs_files, {
-            base: './'
+            base: source.base
         })
         .pipe(gulp.dest(dist_dev));
 });
-
+//views
+gulp.task('views', function() {
+    return gulp.src(source.views, {
+            base: source.base
+        })
+        .pipe(gulp.dest(developement.views));
+});
 // sass compiler task
 gulp.task('sass', function() {
-    return gulp.src('./public/stylessheets/*.scss')
+    return gulp.src(source.stylesheets)
         .pipe(sass({
+            style: 'expanded',
             onError: function(error) {
-                gutil.log(gutil.colors.red(error));
+                gutil.log(gutil.colors.red(JSON.stringify(error)));
                 gutil.beep();
             },
             onSuccess: function() {
@@ -46,12 +69,12 @@ gulp.task('sass', function() {
             }
         }))
         .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
-        .pipe(gulp.dest('./app/styles/'));
+        .pipe(gulp.dest(developement.stylesheets));
 });
 
 // Script task
 gulp.task('scripts', function() {
-    return gulp.src('./public/javascripts/*.js')
+    return gulp.src(source.javascripts)
         .pipe(jshint())
         .pipe(jshint.reporter('default'))
         .pipe(browserify({
@@ -60,39 +83,50 @@ gulp.task('scripts', function() {
         .pipe(rename(function(path) {
             path.basename = 'bundle';
         }))
-        .pipe(gulp.dest('app/scripts'));
+        .pipe(gulp.dest(developement.javascripts));
 });
 
 
-
+// Watch
 gulp.task('watch', function() {
-    gulp.watch(['app/styles/**/*.scss'], ['sass']);
-    gulp.watch(['app/scripts' + '/**/*.js'], ['scripts']);
-    gulp.watch(['./app/**/*.html'], ['html']);
+
+    // Watch .scss files
+    gulp.watch(source.stylesheets, ['sass']);
+
+    // Watch .js files
+    gulp.watch(source.javascripts, ['scripts']);
+
+    // watch html files
+    gulp.watch(source.views, ['views']);
+
+    // Watch image files
+    //gulp.watch('src/images/**/*', ['images']);
+    livereload.listen();
+    // Watch any files in dist/, reload on change
+    gulp.watch(['dist/developement/**']).on('change', livereload.changed);
+
 });
+
 
 gulp.task('server', function() {
-    app.listen(8000);
-    livereload.listen();
+    require(dist_dev + 'app.js').listen(8000);
+    // livereload.listen();
 });
 
-gulp.task('watch', function() {
-    // gulp.watch().on('change', livereload.changed);
-    // gulp.watch(, livereload.changed);
-});
-
-gulp.task('build', ['clean-build', 'server-files'], function() {
+gulp.task('build', ['server-files', 'scripts', 'sass'], function() {
 
 });
 
-gulp.task('default', ['server', 'watch'], function() {
+gulp.task('dev', ['server', 'watch'], function() {
 
 });
 
 
+gulp.task('default', function() {
+    runSequence('clean-build', 'build', 'dev', function() {
 
-
-
+    });
+});
 
 
 // Load plugins
