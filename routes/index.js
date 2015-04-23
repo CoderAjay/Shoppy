@@ -2,11 +2,27 @@ var express = require('express');
 var router = express.Router();
 var apiss = require('../externalApis');
 
+
 /* GET home page. */
+
+
 router.get('/', function(req, res) {
-    res.render('index', {
-        title: 'Express',
-        name: ' Ajay Singh'
+  res.render('home');
+});
+router.get('/search', function(req, res) {
+
+    apiss.shopstyleProductSearch({
+        fts: req.query.q,
+        offset: 0,
+        limit: 50
+    }).then(function(results) {
+        res.render('search', {
+            products: results.products
+        });
+    }, function(err) {
+        res.render('error', {
+            error: JSON.stringify(err)
+        });
     });
 });
 

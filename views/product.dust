@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <img src="{product.image.sizes.IPhone.url}" class="img-responsive" alt="Image">
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+            <div class="row">
+                <h1>{product.name}</h1>
+                <h3></h3>
+            </div>
+            <div class="row"> {product.priceLabel} </div>
+            <div class="row">
+                <a href="{product.clickUrl}" class="btn btn-success">Buy Now</a>
+                 <div id="addToCart" data-product='{product|js}' class="btn btn-danger">Add TO Cart</div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h2>Description</h2>
+            <div class="product-description">
+                {product.description|s}
+            </div>
+        </div>
+    </div>
+
+</div>

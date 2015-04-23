@@ -10,27 +10,35 @@ var gulp = require('gulp'),
     browserify = require('gulp-browserify'),
     livereload = require('gulp-livereload'),
     clean = require('gulp-clean'),
+    dust = require('gulp-dust'),
     runSequence = require('run-sequence');
 
 
 var nodejs_files = [
     './app.js',
     './routes/*.js',
+    './schema/*.js',
+    './controller/**/*.js',
     './externalApis/*.js'
 ];
 var dist_dev = './dist/developement/';
 
 var source = {
     base: './',
-    views: ['./views/**/*.hjs', './views/*.hjs'],
+    views: ['./views/*.dust'],
     stylesheets: './app/stylesheets/*.scss',
-    javascripts: './app/javascripts/*.js'
+    javascripts: './app/javascripts/*.js',
+    modules: ['./app/modules/**/*.js'],
+    images: './app/images/*',
+    templatesSrc: ['./views/templates/cart/*.dust'],
+    templatesDes: './app/templates/cart'
 };
 var developement = {
     base: './dist/',
     views: './dist/developement',
     javascripts: './dist/developement/app/scripts',
-    stylesheets: './dist/developement/app/styles'
+    stylesheets: './dist/developement/app/styles',
+    images: './dist/developement'
 };
 //cleaning distribution folder
 gulp.task('clean-build', function() {
@@ -75,8 +83,8 @@ gulp.task('sass', function() {
 // Script task
 gulp.task('scripts', function() {
     return gulp.src(source.javascripts)
-        .pipe(jshint())
-        .pipe(jshint.reporter('default'))
+        // .pipe(jshint())
+        // .pipe(jshint.reporter('default'))
         .pipe(browserify({
             insertGlobals: true
         }))
@@ -86,6 +94,22 @@ gulp.task('scripts', function() {
         .pipe(gulp.dest(developement.javascripts));
 });
 
+// // Images
+gulp.task('images', function() {
+    return gulp.src(source.images, {
+            base: source.base
+        })
+        // .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
+        .pipe(gulp.dest(developement.images));
+    // .pipe(notify({ message: 'Images task complete' }));
+});
+
+gulp.task('compileDust', function() {
+    return gulp.src(source.templatesSrc)
+        .pipe(dust())
+        .pipe(concat('index.js'))
+        .pipe(gulp.dest(source.templatesDes));
+});
 
 // Watch
 gulp.task('watch', function() {
@@ -99,6 +123,7 @@ gulp.task('watch', function() {
     // watch html files
     gulp.watch(source.views, ['views']);
 
+    gulp.watch(source.modules, ['scripts']);
     // Watch image files
     //gulp.watch('src/images/**/*', ['images']);
     livereload.listen();
@@ -113,7 +138,7 @@ gulp.task('server', function() {
     // livereload.listen();
 });
 
-gulp.task('build', ['server-files', 'scripts', 'sass'], function() {
+gulp.task('build', ['server-files', 'compileDust', 'scripts', 'sass', 'images'], function() {
 
 });
 

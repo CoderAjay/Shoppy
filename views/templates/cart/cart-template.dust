@@ -1,0 +1,7 @@
+<div class="cart-class">
+  <div class="cart-icon">
+    <span id="count"></span>
+  </div>
+  <div class="cart-hover" style="display:none">
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <a class="navbar-brand" href="/">Shoppy </a>
+    <ul class="nav navbar-nav">
+        <li class="active">
+            <a href="#"> </a>
+        </li>
+        <li>
+            <a href="#"> </a>
+        </li>
+    </ul>
+    <form class="navbar-form navbar-left" role="search" action="/search" method="GET" id="search">
+        <div class="form-group">
+            <label class="sr-only" for=""> </label>
+            <input name="q" type="search" class="form-control" id="" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <ul class="nav navbar-nav pull-right">
+        {>cart /}
+    </ul>
+</nav>

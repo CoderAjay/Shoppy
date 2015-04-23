@@ -1,6 +1,10 @@
 'use strict';
 var request = require('request');
 var Promise = require('bluebird');
+var Memcached = require('memcached');
+var memcached = new Memcached(['127.0.0.1:11211'], {
+    maxKeySize: 1000
+});
 
 var _generateApiUrl = function(url, options) {
     for (var key in options) {
@@ -52,15 +56,34 @@ var shopstyleEndpoints = function() {
     };
 };
 
+var getFromMemcached = function(url, cb) {
+    memcached.get(url, cb);
+};
+
+var setToMemcached = function(url, body) {
+    memcached.set(url, body, 2592000, function(err, result) {
+
+    });
+};
+
 var shopstyleRequest = function(url) {
     return new Promise(function(resolve, reject) {
-        request(url, function(error, response, body) {
-            if (!error && response.statusCode == 200) {
-                resolve(JSON.parse(body));
+        getFromMemcached(url, function(error, data) {
+            if (!error && data) {
+                console.log('memcached');
+                resolve(JSON.parse(data));
             } else {
-                reject(error);
+                request(url, function(error, response, body) {
+                    if (!error && response.statusCode == 200) {
+                        setToMemcached(url, body);
+                        resolve(JSON.parse(body));
+                    } else {
+                        reject(error);
+                    }
+                });
             }
         });
+
     });
 };
 
@@ -81,7 +104,10 @@ var shopstyleProductFetch = function(options) {
                 reject(new Error(res));
             }
         }, function() {
-            reject(new Error({status:504,message:'Unreachable'}));
+            reject(new Error({
+                status: 504,
+                message: 'Unreachable'
+            }));
         });
     });
 };
@@ -96,7 +122,10 @@ var shopstyleRelatedProductFetch = function(options) {
                 reject(new Error(res));
             }
         }, function() {
-            reject(new Error({status:504,message:'Unreachable'}));
+            reject(new Error({
+                status: 504,
+                message: 'Unreachable'
+            }));
         });
     });
 };
@@ -111,7 +140,10 @@ var shopstyleProductSearch = function(options) {
                 reject(new Error(res));
             }
         }, function() {
-            reject(new Error({status:504,message:'Unreachable'}));
+            reject(new Error({
+                status: 504,
+                message: 'Unreachable'
+            }));
         });
     });
 
@@ -130,7 +162,10 @@ var shopstyleProductHistogram = function(options) {
                 reject(new Error(res));
             }
         }, function() {
-            reject(new Error({status:504,message:'Unreachable'}));
+            reject(new Error({
+                status: 504,
+                message: 'Unreachable'
+            }));
         });
     });
 };
@@ -146,7 +181,10 @@ var shopstyleProductCategory = function(options) {
                 reject(new Error(res));
             }
         }, function() {
-            reject(new Error({status:504,message:'Unreachable'}));
+            reject(new Error({
+                status: 504,
+                message: 'Unreachable'
+            }));
         });
     });
 
