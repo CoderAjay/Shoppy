@@ -30,6 +30,7 @@
     "gulp-clean": "^0.3.1",
     "gulp-concat": "^2.5.2",
     "gulp-dust": "^1.0.2",
+    "gulp-folders": "^1.1.0",
     "gulp-jshint": "^1.10.0",
     "gulp-livereload": "^3.8.0",
     "gulp-rename": "^1.2.2",

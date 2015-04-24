@@ -1,8 +1,11 @@
 var jQuery = window.jQuery = require('jquery');
 var Backbone = require('backbone');
 Backbone.$ = jQuery;
-var Application = require('../../modules/application.js');
-
+var Application = require('../application');
+var Com = require('../com');
+var ComPort = Application.set('com', function() {
+    return Com;
+});
 
 var SearchForm = Backbone.View.extend({
     events: {
@@ -10,16 +13,15 @@ var SearchForm = Backbone.View.extend({
     },
     submit: function(e) {
         e.preventDefault();
-        console.log('ok');
+        var query = this.$el.find('[name=q]').val();
+        if (query) {
+            ComPort.trigger('search:query', query);
+        }
     }
 });
 
-var SearchView = Backbone.View.extend({
-
-});
-
 module.exports = function(element, options) {
-    return new SearchPage({
+    return new SearchForm({
         el: element
     });
 };

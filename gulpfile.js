@@ -7,6 +7,8 @@ var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     sass = require('gulp-sass'),
     jshint = require('gulp-jshint'),
+    path = require('path'),
+    folders = require('gulp-folders'),
     browserify = require('gulp-browserify'),
     livereload = require('gulp-livereload'),
     clean = require('gulp-clean'),
@@ -25,13 +27,13 @@ var dist_dev = './dist/developement/';
 
 var source = {
     base: './',
-    views: ['./views/*.dust'],
+    views: ['./views/**'],
     stylesheets: './app/stylesheets/*.scss',
     javascripts: './app/javascripts/*.js',
     modules: ['./app/modules/**/*.js'],
     images: './app/images/*',
-    templatesSrc: ['./views/templates/cart/*.dust'],
-    templatesDes: './app/templates/cart'
+    templatesSrc: './views/templates',
+    templatesDes: './app/templates'
 };
 var developement = {
     base: './dist/',
@@ -104,12 +106,19 @@ gulp.task('images', function() {
     // .pipe(notify({ message: 'Images task complete' }));
 });
 
-gulp.task('compileDust', function() {
-    return gulp.src(source.templatesSrc)
+gulp.task('compileDust', folders(source.templatesSrc, function(folder) {
+
+
+    return gulp.src(path.join(source.templatesSrc, folder, '*.dust'))
         .pipe(dust())
-        .pipe(concat('index.js'))
+        .pipe(concat(folder + '.js'))
         .pipe(gulp.dest(source.templatesDes));
-});
+
+    // return gulp.src(source.templatesSrc)
+    //     .pipe(dust())
+    //     .pipe(concat('index.js'))
+    //     .pipe(gulp.dest(source.templatesDes));
+}));
 
 // Watch
 gulp.task('watch', function() {

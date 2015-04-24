@@ -7,17 +7,18 @@ var apiss = require('../externalApis');
 
 
 router.get('/', function(req, res) {
-  res.render('home');
+    res.render('home');
 });
 router.get('/search', function(req, res) {
-
+    var subtitle = 'Serach Results';
     apiss.shopstyleProductSearch({
         fts: req.query.q,
         offset: 0,
         limit: 50
     }).then(function(results) {
         res.render('search', {
-            products: results.products
+            products: results.products,
+            subtitle: subtitle
         });
     }, function(err) {
         res.render('error', {
@@ -32,7 +33,7 @@ router.get('/products', function(req, res) {
 
 
 router.get('/products/:id', function(req, res) {
-    var product, taxonomy;
+    var product, taxonomy, subtitle = 'Related Products';
     apiss.shopstyleProductFetch({
         id: req.params.id
     }).then(function(prod) {
@@ -42,9 +43,10 @@ router.get('/products/:id', function(req, res) {
         });
     }).then(function(tax) {
         taxonomy = tax.products;
-        res.render('index', {
+        res.render('productmain', {
             product: product,
-            taxonomy: taxonomy
+            products: taxonomy,
+            subtitle: subtitle
         });
     }, function(err) {
         res.render('error', {

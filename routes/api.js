@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var apiss = require('../externalApis');
 
 /* GET  listing. */
 router.get('/', function(req, res) {
@@ -8,9 +9,18 @@ router.get('/', function(req, res) {
 
 
 
-/*
- memcache to store all product in cart
- */
+router.get('/search/:q', function(req, res) {
+    apiss.shopstyleProductSearch({
+        fts: req.params.q,
+        offset: 0,
+        limit: 50
+    }).then(function(results) {
+        res.json(results.products);
+    }, function(err) {
+        res.status(404).send(err);
+    });
+});
+
 var cart = require('../controller/cartController.js');
 router.get('/cart', cart.all);
 router.get('/cart/:id', cart.one);
