@@ -37,7 +37,7 @@ var templates = require('../../templates/cart');
     var ItemView = Backbone.View.extend({
         tagName: 'div',
         className: 'item-wrap',
-        template: 'item-template.dust',
+        template: 'item-template',
         events: {
             'click #cross': 'removeItem'
         },
@@ -112,7 +112,7 @@ var templates = require('../../templates/cart');
     var CartView = Backbone.View.extend({
         tagName: 'div',
         className: 'cart',
-        template: 'cart-template.dust',
+        template: 'cart-template',
         events: {
             'click': 'toggleVisible'
         },

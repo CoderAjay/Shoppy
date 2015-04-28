@@ -11,8 +11,36 @@ li {
     list-style: none;
 }
 
+li#rProduct {
+    min-width: 50px;
+}
+
 .product-description ul li {
     list-style: decimal;
+}
+
+a.product {
+    color: black;
+}
+
+a.product:hover {
+    text-decoration: none;
+}
+
+.product-tmpl {
+    padding-bottom: 30px;
+}
+
+.product-desc {
+    min-height: 130px;
+}
+
+.img-wrapper {
+    height: 130px;
+}
+
+.img-wrapper img {
+    max-height: 120px;
 }
 
 .related-product-tmpl li#rProduct {
@@ -20,6 +48,16 @@ li {
     -moz-transition: -moz-transform .3s linear .2s, opacity .8s linear;
     -webkit-transition: -webkit-transform .3s linear .2s, opacity .8s linear;
     -o-transition: -o-transform .3s linear .2s, opacity .8s linear;
+}
+
+#body-main {
+    margin: 10px 10px 10px 10px;
+    float: left;
+}
+
+.panel {
+    float: left;
+    width: 100%;
 }
 
 .jstooltip {
@@ -128,4 +166,20 @@ li {
     -moz-transform: scale(0, 0);
     transform: scale(0, 0);
     opacity: .2;
+}
+
+.tota {
+    position: relative;
+}
+
+.spinner {
+    background: url('../images/Spinner.gif') no-repeat;
+    display: inline-table;
+    width: 70px;
+    height: 72px;
+    background-size: 100%;
+    padding: 1em;
+    position: absolute;
+    top: 40%;
+    left: 40%;
 }

@@ -1,15 +1,17 @@
 var express = require('express');
 var router = express.Router();
 var apiss = require('../externalApis');
-
-
-/* GET home page. */
+var options = require('../config');
 
 
 router.get('/', function(req, res) {
     res.render('home');
 });
 router.get('/search', function(req, res) {
+    options.current.title = 'Search';
+    options.current.page = 'search';
+    options.current.bootstrap = true;
+
     var subtitle = 'Serach Results';
     apiss.shopstyleProductSearch({
         fts: req.query.q,
@@ -18,7 +20,9 @@ router.get('/search', function(req, res) {
     }).then(function(results) {
         res.render('search', {
             products: results.products,
-            subtitle: subtitle
+            subtitle: subtitle,
+            options: options,
+            server: "yes"
         });
     }, function(err) {
         res.render('error', {
@@ -46,7 +50,8 @@ router.get('/products/:id', function(req, res) {
         res.render('productmain', {
             product: product,
             products: taxonomy,
-            subtitle: subtitle
+            subtitle: subtitle,
+            server: "yes"
         });
     }, function(err) {
         res.render('error', {

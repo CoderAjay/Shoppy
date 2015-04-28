@@ -1,4 +1,4 @@
-<img src="{image.sizes.Small.url}" alt="{name}">
+<img src="{image.sizes.Medium.url}" alt="{name}">
 <div class="item">
     <span id="name">{name}</span>
     <span id="quantity">{Quantity}</span>

@@ -20,8 +20,12 @@ var SearchForm = Backbone.View.extend({
     }
 });
 
-module.exports = function(element, options) {
-    return new SearchForm({
-        el: element
-    });
+
+module.exports = {
+
+    form: function(element, options) {
+        return new SearchForm({
+            el: element
+        });
+    }
 };

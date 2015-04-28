@@ -57,11 +57,11 @@ var shopstyleEndpoints = function() {
 };
 
 var getFromMemcached = function(url, cb) {
-    memcached.get(url, cb);
+    memcached.get(encodeURI(url), cb);
 };
 
 var setToMemcached = function(url, body) {
-    memcached.set(url, body, 2592000, function(err, result) {
+    memcached.set(encodeURI(url), body, 2592000, function(err, result) {
 
     });
 };
@@ -88,14 +88,17 @@ var shopstyleRequest = function(url) {
 };
 
 var shopstyleFetch = function(endpoint, options) {
-    var apiUrl = 'http://api.shopstyle.com/api/v2' + endpoint;
+    var url, apiUrl;
+
+    apiUrl = 'http://api.shopstyle.com/api/v2' + endpoint;
     apiUrl += "?pid=" + shopstyleCredentials().pid;
-    var url = _generateApiUrl(apiUrl, options);
+    url = _generateApiUrl(apiUrl, options);
     return shopstyleRequest(url);
 };
 
 var shopstyleProductFetch = function(options) {
     var endpoint = shopstyleEndpoints().product + options.id;
+
     return new Promise(function(resolve, reject) {
         shopstyleFetch(endpoint, options).then(function(res) {
             if (res.id) {
