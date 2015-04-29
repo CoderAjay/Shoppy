@@ -12,13 +12,13 @@
 </head>
 
 <body>
+    {>header /}
     <div class="container-fluid">
-        {>header /}
-        <div id="body-main">
+        <div id="body-main" class="clearfix">
             {+body /}
         </div>
-        {>footer /}
     </div>
+    {>footer /}
     <script type="text/javascript" src="/scripts/bundle.js"></script>
     <script type="text/javascript" id="initialize_application">
     Application.bootstrap('{options|js|s}');
