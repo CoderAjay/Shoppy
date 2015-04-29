@@ -11,9 +11,9 @@ var ptemplates = require('../../templates/products');
 var extratemplates = require('../../templates/extra');
 
 var ComPort = Application.get('com');
-
+var baseUrl = Application.get('settings').baseUrl||'';
 var Product = Backbone.Model.extend({
-    urlRoot: '/api/products/',
+    urlRoot: baseUrl+'/api/products/',
     url: function() {
         return this.urlRoot + this.id;
     }
@@ -65,7 +65,7 @@ var ProductView = Backbone.View.extend({
 
 var ProductCollection = Backbone.Collection.extend({
     setUrl: function(uri) {
-        this.url = uri;
+        this.url = baseUrl+uri;
         return this;
     }
 });
@@ -145,7 +145,7 @@ var ProductCollectionView = Backbone.View.extend({
 
 var PageView = Backbone.View.extend({
     el: '#body-main',
-    template: 'product_container',
+    template: 'productcontainer',
     initialize: function(options) {
         this.productId = options.id;
         this.productOptions = options;
