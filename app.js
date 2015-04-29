@@ -38,7 +38,11 @@ app.use(session({
     }),
     secret: '1234567890QWERTY'
 }));
-
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 app.use('/', main);
 app.use('/api', api);
 
