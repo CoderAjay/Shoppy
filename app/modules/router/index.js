@@ -1,7 +1,7 @@
 var jQuery = window.jQuery = require('jquery');
 var Backbone = require('backbone');
 Backbone.$ = jQuery;
-var PageLoad = true;
+var PageLoad = false;
 var Products = require('../products');
 var bootstrap = require('../bootstrap');
 var Router = Backbone.Router.extend({
@@ -16,7 +16,11 @@ var Router = Backbone.Router.extend({
             bootstrap.initHome();
             return;
         }
-        console.log(' home');
+        console.log('home');
+        this.navigate('/search?q=black', {
+            trigger: true,
+            replace: false
+        });
     },
     search: function(query) {
         if (PageLoad) {
