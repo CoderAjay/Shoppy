@@ -37,14 +37,22 @@ var source = {
     modules: ['./app/modules/**/*.js'],
     images: './app/images/*',
     templatesSrc: './views/templates',
-    templatesDes: './app/templates'
+    templatesDes: './app/templates',
+    phonegapIndex: './phonegap/index.html'
 };
 var developement = {
-    base: './dist/',
+    base: './dist/developement',
     views: './dist/developement',
     javascripts: './dist/developement/app/scripts',
     stylesheets: './dist/developement/app/styles',
     images: './dist/developement'
+};
+
+var phonegap = {
+    base: './dist/phonegap',
+    javascripts: './dist/phonegap/app/scripts',
+    stylesheets: './dist/phonegap/app/styles',
+    images: './dist/phonegap'
 };
 //cleaning distribution folder
 gulp.task('clean-build', function() {
@@ -93,7 +101,9 @@ gulp.task('sass', function() {
         }))
         .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
         .pipe(gulp.dest(developement.stylesheets))
-        .pipe(rename({ suffix: '.min' }))
+        .pipe(rename({
+            suffix: '.min'
+        }))
         .pipe(minifycss())
         .pipe(gulp.dest(developement.stylesheets))
         .pipe(notify({
@@ -112,7 +122,7 @@ gulp.task('scripts', function() {
         .pipe(rename(function(path) {
             path.basename = 'bundle';
         }))
-        .pipe(uglify())
+        // .pipe(uglify())
         .pipe(gulp.dest(developement.javascripts))
         .pipe(notify({
             message: 'Script task completed.'
@@ -195,6 +205,9 @@ gulp.task('default', function() {
     });
 });
 
+gulp.task('phonegap', function() {
+
+});
 
 // Load plugins
 // var gulp = require('gulp'),
@@ -230,4 +243,3 @@ gulp.task('default', function() {
 //     .pipe(gulp.dest('dist/images'))
 //     .pipe(notify({ message: 'Images task complete' }));
 // });
-
