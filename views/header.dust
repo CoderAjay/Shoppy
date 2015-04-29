@@ -1,13 +1,5 @@
 <nav class="navbar navbar-default navbar-static-top" role="navigation">
     <a class="navbar-brand" href="/">Shoppy </a>
-    <ul class="nav navbar-nav">
-        <li class="active">
-            <a href="#"> </a>
-        </li>
-        <li>
-            <a href="#"> </a>
-        </li>
-    </ul>
     <form class="navbar-form navbar-left" role="search" action="/search" method="GET" id="search">
         <div class="form-group">
             <label class="sr-only" for=""> </label>
