@@ -1,29 +1,30 @@
 'use strict';
-/*global require*/
 var Application = require('../modules/application.js');
 window.Application = {};
 window.Application.bootstrap = function(data) {
     Application.set('settings', function() {
         document.getElementById('initialize_application').remove();
         delete window.Application;
-        return JSON.parse(data);
+        var settings = JSON.parse(data) || {};
+        settings.baseUrl = 'http://127.0.0.1:8000';
+        return settings;
     });
 };
 
 var $ = window.jQuery = require('jquery');
-var Backbone = require('backbone');;
+var Backbone = require('backbone');
 Backbone.$ = $;
 var bootstrap = require('bootstrap');
-
-var Cart = require('../modules/cart');
-var Search = require('../modules/search');
-var Router = require('../modules/router');
 
 $(document).ready(function() {
     main();
 });
 
 function main(d) {
+    var Cart = require('../modules/cart');
+    var Search = require('../modules/search');
+    var router = require('../modules/router');
+
     /** no connection with server side rendering */
     Application.set('cart', function() {
         return Cart.createCart('#cart', {});
@@ -34,11 +35,9 @@ function main(d) {
     });
 
     Application.set('router', function() {
-        return Router();
+        return router();
     });
-    Backbone.history.start({
-        pushState: true
-    });
+    Backbone.history.start();
 
     Application.get('com')
         .on('search:query', function(query) {
