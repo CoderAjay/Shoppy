@@ -24,13 +24,14 @@ var templates = require('../../templates/cart');
 
 (function(Backbone, dust, $) {
 
-
+    var Application = require('../application');
+    var baseUrl = Application.get('settings').baseUrl || '';
     var Item = Backbone.Model.extend({
         defaults: {
             Quantity: 1
         },
         url: function() {
-            return '/api/cart/' + this.id;
+            return baseUrl + '/api/cart/' + this.id;
         }
     });
 
@@ -60,7 +61,7 @@ var templates = require('../../templates/cart');
 
     var ItemCollection = Backbone.Collection.extend({
         model: Item,
-        url: '/api/cart',
+        url: baseUrl+'/api/cart',
         initialize: function() {
             var self = this;
             this.fetch({
