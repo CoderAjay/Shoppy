@@ -1,5 +1,4 @@
 body {
-    padding: 50px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -50,9 +49,22 @@ a.product:hover {
     -o-transition: -o-transform .3s linear .2s, opacity .8s linear;
 }
 
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.clearfix {
+    *zoom: 1;
+}
+
 #body-main {
     margin: 10px 10px 10px 10px;
-    float: left;
 }
 
 .panel {
@@ -101,6 +113,10 @@ a.product:hover {
     text-shadow: 1px 1px 0 #222;
 }
 
+.cart-class {
+    margin-top: 0.5em;
+}
+
 .cart-icon {
     background: url("../images/cart.png") no-repeat;
     width: 70px;
@@ -108,9 +124,8 @@ a.product:hover {
 }
 
 .cart-hover {
-    margin-left: -120px;
+    right: 0;
     position: absolute;
-    z-index: 100;
     border: 10px solid #615E64;
     background: #E2E1DA;
     padding: 10px 10px 0px 10px;
@@ -181,5 +196,14 @@ a.product:hover {
     padding: 1em;
     position: absolute;
     top: 40%;
-    left: 40%;
+    left: 46%;
+}
+
+@media (min-width: 992px) {
+    .product-listings .list-item.col-lg-2 {
+        float: none;
+        display: inline-block;
+        vertical-align: top;
+        margin-bottom: 20px;
+    }
 }
