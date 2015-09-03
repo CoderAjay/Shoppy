@@ -25,7 +25,7 @@ var templates = require('../../templates/cart');
 (function(Backbone, dust, $) {
 
     var Application = require('../application');
-    var baseUrl = Application.get('settings').baseUrl || '';
+    var baseUrl = Application.get('settings').site.baseUrl || '';
     var Item = Backbone.Model.extend({
         defaults: {
             Quantity: 1
