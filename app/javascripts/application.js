@@ -2,13 +2,12 @@
 var Application = require('../modules/application.js');
 window.Application = {};
 window.Application.bootstrap = function(data) {
-    Application.set('settings', function() {
+    var settings = Application.set('settings', function() {
         document.getElementById('initialize_application').remove();
         delete window.Application;
-        var settings = JSON.parse(data) || {};
-        settings.baseUrl = 'http://127.0.0.1:8000';
-        return settings;
+        return JSON.parse(data) || {};
     });
+    main(settings);
 };
 
 var $ = window.jQuery = require('jquery');
@@ -16,11 +15,7 @@ var Backbone = require('backbone');
 Backbone.$ = $;
 var bootstrap = require('bootstrap');
 
-$(document).ready(function() {
-    main();
-});
-
-function main(d) {
+function main(settings) {
     var Cart = require('../modules/cart');
     var Search = require('../modules/search');
     var router = require('../modules/router');
@@ -37,7 +32,9 @@ function main(d) {
     Application.set('router', function() {
         return router();
     });
-    Backbone.history.start();
+    Backbone.history.start({
+        pushState: settings.site.pushState
+    });
 
     Application.get('com')
         .on('search:query', function(query) {
