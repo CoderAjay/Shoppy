@@ -3,10 +3,10 @@
     </div>
     <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
         <div class="product-tmpl">
-            {@eq key=server value="yes"} {>"templates/products/product" /} {/eq}
+            {@eq key=options.server value="yes"} {>"templates/products/product" /} {/eq}
         </div>
         <div class="related-product-tmpl">
-            {@eq key=server value="yes"}
+            {@eq key=options.server value="yes"}
              {>"templates/products/products" /} {/eq}
         </div>
     </div>
