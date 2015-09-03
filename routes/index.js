@@ -5,14 +5,13 @@ var options = require('../config');
 
 
 router.get('/', function(req, res) {
-    res.render('home');
+    res.render('home', {
+        options: options
+    });
 });
 router.get('/search', function(req, res) {
     options.current.title = 'Search';
     options.current.page = 'search';
-    options.current.bootstrap = true;
-
-    var subtitle = 'Serach Results';
     apiss.shopstyleProductSearch({
         fts: req.query.q,
         offset: 0,
@@ -20,9 +19,8 @@ router.get('/search', function(req, res) {
     }).then(function(results) {
         res.render('search', {
             products: results.products,
-            subtitle: subtitle,
-            options: options,
-            server: "yes"
+            subtitle: 'Serach Results',
+            options: options
         });
     }, function(err) {
         res.render('error', {
@@ -51,7 +49,7 @@ router.get('/products/:id', function(req, res) {
             product: product,
             products: taxonomy,
             subtitle: subtitle,
-            server: "yes"
+            options: options
         });
     }, function(err) {
         res.render('error', {
