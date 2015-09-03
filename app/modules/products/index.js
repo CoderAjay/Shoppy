@@ -11,7 +11,7 @@ var ptemplates = require('../../templates/products');
 var extratemplates = require('../../templates/extra');
 
 var ComPort = Application.get('com');
-var baseUrl = Application.get('settings').baseUrl||'';
+var baseUrl = Application.get('settings').site.baseUrl||'';
 var Product = Backbone.Model.extend({
     urlRoot: baseUrl+'/api/products/',
     url: function() {
