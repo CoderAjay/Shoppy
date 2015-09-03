@@ -1,0 +1,24 @@
+<hr />
+<h3>{subtitle} </h3>
+<ul class="product-listings">
+    {#products}
+    <li class="col-xs-12 col-md-4 col-lg-2 list-item" id="rProduct">
+        <div id="addToCart" class="modelProduct jstooltip" {@eq key=options.server value="yes" }data-model='{.|js}' {/eq} style="display: none;">
+            <span class="item_price">{priceLabel}</span>
+            <a class="item_add">Add to Cart</a>
+        </div>
+        <a class="product" href="/products/{id}" data-productId="{id}">
+            <div class="img-wrapper">
+                <img src="{image.sizes.Medium.url}" class="img-responsive" alt="Image">
+            </div>
+            <div class="product-desc">
+                <h4> {name}</h4>
+                <div class="pricetag">{priceLabel} </div>
+            </div>
+        </a>
+    </li>
+    {:else}
+    <p>no products to show</p>
+    {/products}
+</ul>
+

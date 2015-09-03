@@ -1,0 +1,8 @@
+<img src="{image.sizes.Medium.url}" alt="{name}">
+<div class="item">
+    <span id="name">{name}</span>
+    <span id="quantity">{Quantity}</span>
+    <span id="price">{priceLabel}</span>
+    <button id="cross">X</button>
+</div>
+
