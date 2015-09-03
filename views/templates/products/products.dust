@@ -3,7 +3,7 @@
 <ul class="product-listings">
     {#products}
     <li class="col-xs-12 col-md-4 col-lg-2 list-item" id="rProduct">
-        <div id="addToCart" class="modelProduct jstooltip" {@eq key=server value="yes" }data-model='{.|js}' {/eq} style="display: none;">
+        <div id="addToCart" class="modelProduct jstooltip" {@eq key=options.server value="yes" }data-model='{.|js}' {/eq} style="display: none;">
             <span class="item_price">{priceLabel}</span>
             <a class="item_add">Add to Cart</a>
         </div>
