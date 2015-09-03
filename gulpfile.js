@@ -50,41 +50,41 @@ var developement = {
 
 var phonegap = {
     base: './dist/phonegap',
-    javascripts: './dist/phonegap/app/scripts',
-    stylesheets: './dist/phonegap/app/styles',
-    images: './dist/phonegap'
+    javascripts: './dist/phonegap/scripts',
+    stylesheets: './dist/phonegap/stylesheets',
+    images: './dist/phonegap/images'
 };
-//cleaning distribution folder
+
 gulp.task('clean-build', function() {
     return gulp.src(developement.base, {
             read: false
         })
         .pipe(clean({
             force: true
-        }))
-        .pipe(notify({
-            message: 'Deleted previous build.'
-        }));;
+        }));
+    // .pipe(notify({
+    //     message: 'Deleted previous build.'
+    // }));
 });
 // copying node server files in developement folder
 gulp.task('server-files', ['views'], function() {
     return gulp.src(nodejs_files, {
             base: source.base
         })
-        .pipe(gulp.dest(dist_dev))
-        .pipe(notify({
-            message: 'Copied Server Files.'
-        }));;
+        .pipe(gulp.dest(dist_dev));
+    // .pipe(notify({
+    //     message: 'Copied Server Files.'
+    // }));
 });
 //views
 gulp.task('views', function() {
     return gulp.src(source.views, {
             base: source.base
         })
-        .pipe(gulp.dest(developement.views))
-        .pipe(notify({
-            message: 'Html View has been copied.'
-        }));;
+        .pipe(gulp.dest(developement.views));
+    // .pipe(notify({
+    //     message: 'Html View has been copied.'
+    // }));
 });
 // sass compiler task
 gulp.task('sass', function() {
@@ -105,10 +105,10 @@ gulp.task('sass', function() {
             suffix: '.min'
         }))
         .pipe(minifycss())
-        .pipe(gulp.dest(developement.stylesheets))
-        .pipe(notify({
-            message: 'Sass task complete.'
-        }));;
+        .pipe(gulp.dest(developement.stylesheets));
+    // .pipe(notify({
+    //     message: 'Sass task complete.'
+    // }));
 });
 
 // Script task
@@ -123,10 +123,10 @@ gulp.task('scripts', function() {
             path.basename = 'bundle';
         }))
         // .pipe(uglify())
-        .pipe(gulp.dest(developement.javascripts))
-        .pipe(notify({
-            message: 'Script task completed.'
-        }));;
+        .pipe(gulp.dest(developement.javascripts));
+    // .pipe(notify({
+    //     message: 'Script task completed.'
+    // }));
 });
 
 // // Images
@@ -135,10 +135,10 @@ gulp.task('images', function() {
             base: source.base
         })
         // .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
-        .pipe(gulp.dest(developement.images))
-        .pipe(notify({
-            message: 'Images task complete'
-        }));
+        .pipe(gulp.dest(developement.images));
+    // .pipe(notify({
+    //     message: 'Images task complete'
+    // }));
 });
 
 gulp.task('compileDust', folders(source.templatesSrc, function(folder) {
@@ -150,10 +150,10 @@ gulp.task('compileDust', folders(source.templatesSrc, function(folder) {
         }))
         .pipe(dust())
         .pipe(concat(folder + '.js'))
-        .pipe(gulp.dest(source.templatesDes))
-        .pipe(notify({
-            message: 'Templates compiled for front end.'
-        }));;
+        .pipe(gulp.dest(source.templatesDes));
+    // .pipe(notify({
+    //     message: 'Templates compiled for front end.'
+    // }));
 
     // return gulp.src(source.templatesSrc)
     //     .pipe(dust())
@@ -205,8 +205,76 @@ gulp.task('default', function() {
     });
 });
 
-gulp.task('phonegap', function() {
+//cleaning distribution folder
+gulp.task('phonegap-clean-build', function() {
+    return gulp.src(phonegap.base, {
+            read: false
+        })
+        .pipe(clean({
+            force: true
+        }))
+        .pipe(notify({
+            title: 'Phonegap',
+            message: 'Deleted previous phonegap build.',
+            onLast: true
+        }));
+});
 
+gulp.task('phonegap-index', function() {
+    return gulp.src(source.phonegapIndex)
+        .pipe(gulp.dest(phonegap.base));
+});
+
+gulp.task('phonegap-scripts', function() {
+    return gulp.src(source.javascripts)
+        .pipe(jshint())
+        .pipe(jshint.reporter('default'))
+        .pipe(browserify({
+            insertGlobals: true
+        }))
+        .pipe(rename(function(path) {
+            path.basename = 'bundle';
+        }))
+        // .pipe(uglify())
+        .pipe(gulp.dest(phonegap.javascripts));
+});
+gulp.task('phonegap-sass', function() {
+    return gulp.src(source.stylesheets)
+        .pipe(sass({
+            style: 'expanded',
+            onError: function(error) {
+                gutil.log(gutil.colors.red(JSON.stringify(error)));
+                gutil.beep();
+            },
+            onSuccess: function() {
+                gutil.log(gutil.colors.green('Sass styles compiled successfully.'));
+            }
+        }))
+        .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
+        .pipe(gulp.dest(phonegap.stylesheets))
+        .pipe(rename({
+            suffix: '.min'
+        }))
+        .pipe(minifycss())
+        .pipe(gulp.dest(phonegap.stylesheets));
+});
+gulp.task('phonegap-images', function() {
+    return gulp.src(source.images)
+        // .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
+        .pipe(gulp.dest(phonegap.images));
+});
+
+gulp.task('phonegap-build', ['phonegap-index', 'compileDust', 'phonegap-scripts', 'phonegap-sass', 'phonegap-images'], function() {
+
+});
+gulp.task('phonegap', function() {
+    runSequence('phonegap-clean-build', 'phonegap-build', function() {
+        gulp.src('').pipe(notify({
+            title: 'Phonegap',
+            message: 'Phonegap build is ready.',
+            onLast: true
+        }));
+    });
 });
 
 // Load plugins
