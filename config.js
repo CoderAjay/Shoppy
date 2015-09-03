@@ -1,4 +1,9 @@
 module.exports = {
-    site: {},
+    server: 'yes',
+    site: {
+        bootstrap: true,
+        pushstate: true,
+        baseUrl: ''
+    },
     current: {}
 };
